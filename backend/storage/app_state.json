@@ -1,0 +1,182 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "email": "verifier2@example.com",
+            "fullName": "Verifier User",
+            "role": "admin",
+            "passwordHash": "$2y$12$WoF3P66gk8doGhxHBZBkeefugvMF.S5Uc\/WTV7y6JWpYYY4\/CZIdW",
+            "emailVerifiedAt": "2026-07-14T09:03:15+00:00",
+            "mfaEnabled": false,
+            "createdAt": "2026-07-14T09:03:15+00:00"
+        },
+        {
+            "id": 2,
+            "email": "reg500@example.com",
+            "fullName": "Reg User",
+            "role": "admin",
+            "passwordHash": "$2y$12$hcDJ6zfyfrwWmySD.nmYeerbo.o6vJLkbdgwDT3PidoLEzyP4oxB2",
+            "emailVerifiedAt": "2026-07-14T09:06:36+00:00",
+            "mfaEnabled": false,
+            "createdAt": "2026-07-14T09:06:36+00:00"
+        },
+        {
+            "id": 3,
+            "email": "alistair.m.sweeting@gmail.com",
+            "fullName": "Alistair Sweeting",
+            "role": "admin",
+            "passwordHash": "$2y$12$vcGB9gSl3eo\/BuQWTJ6tJ.\/8wx0pQ2Gl\/.iirw2GvuQ6Ub.L8HwSO",
+            "emailVerifiedAt": "2026-07-14T09:11:09+00:00",
+            "mfaEnabled": false,
+            "createdAt": "2026-07-14T09:11:09+00:00"
+        },
+        {
+            "id": 4,
+            "email": "livesync@example.com",
+            "fullName": "Live Sync User",
+            "role": "admin",
+            "passwordHash": "$2y$12$b1BKj7Ib7A6JtJ9JftINn.6EYWoXysyrNgxuhzdFOjtRX3EpKoHmG",
+            "emailVerifiedAt": "2026-07-14T09:21:09+00:00",
+            "mfaEnabled": false,
+            "createdAt": "2026-07-14T09:21:09+00:00"
+        },
+        {
+            "id": 5,
+            "email": "smoke.14359@example.com",
+            "fullName": "Smoke User",
+            "role": "admin",
+            "passwordHash": "$2y$12$DtHkQl8CZTkEclnDv32tQuU59wuoC1A9VKzcBW1ODSQr0tg5BVT6e",
+            "emailVerifiedAt": "2026-07-14T09:44:46+00:00",
+            "emailVerificationToken": null,
+            "mfaEnabled": false,
+            "mfaSecret": null,
+            "createdAt": "2026-07-14T09:44:46+00:00"
+        },
+        {
+            "id": 6,
+            "email": "oauth.621@example.com",
+            "fullName": "OAuth User",
+            "role": "admin",
+            "passwordHash": "$2y$12$zc.WTfEWch9veFq15NO\/z.Pr9LBM3Y8Ze4QYY0dR2c50.v58KUspa",
+            "emailVerifiedAt": "2026-07-14T10:01:05+00:00",
+            "emailVerificationToken": null,
+            "mfaEnabled": false,
+            "mfaSecret": null,
+            "createdAt": "2026-07-14T10:01:05+00:00"
+        }
+    ],
+    "teams": [
+        {
+            "id": 1,
+            "name": "Team",
+            "ownerUserId": 3,
+            "createdAt": "2026-07-14T09:12:01+00:00"
+        },
+        {
+            "id": 2,
+            "name": "Live Team",
+            "ownerUserId": 4,
+            "createdAt": "2026-07-14T09:21:10+00:00"
+        },
+        {
+            "id": 3,
+            "name": "OAuth Team",
+            "ownerUserId": 6,
+            "createdAt": "2026-07-14T10:01:05+00:00"
+        }
+    ],
+    "socialAccounts": [
+        {
+            "id": 1,
+            "teamId": 1,
+            "platform": "youtube",
+            "accountName": "@ScoptOriginal",
+            "accountType": "business",
+            "status": "sync_failed",
+            "connectedAt": "2026-07-14T09:12:04+00:00",
+            "lastSyncError": "Missing access token for account"
+        },
+        {
+            "id": 2,
+            "teamId": 2,
+            "platform": "twitter",
+            "accountName": "Demo Twitter",
+            "accountType": "business",
+            "externalAccountId": "",
+            "accessToken": "INVALID_TOKEN",
+            "status": "sync_failed",
+            "connectedAt": "2026-07-14T09:21:10+00:00",
+            "lastSyncAt": null,
+            "liveMetrics": null,
+            "recentPosts": [],
+            "lastSyncError": "Remote API request failed"
+        },
+        {
+            "id": 3,
+            "teamId": 3,
+            "platform": "linkedin",
+            "accountName": "LinkedIn Company",
+            "accountType": "business",
+            "externalAccountId": "",
+            "accessToken": "enc:qfAKyZR+eaB8+9iuH750rP0cgQDq0u6VE8YIUS\/uVQsO3S1MNadl81chaLB2Ck59Q8vSrWfXeeRSUXlxNBVIEA==",
+            "refreshToken": "enc:BH2FditpwRa\/cV5aHB2l+D2RxXRsxoX4t+fhBVihGLo3AB53Koulo3i80VCzcv2UZ7p7uORTNeuMthDeMCVg2w==",
+            "tokenExpiresAt": "2026-07-14T11:01:05+00:00",
+            "oauthScope": "openid profile email w_member_social",
+            "status": "active",
+            "connectedAt": "2026-07-14T10:01:05+00:00",
+            "lastSyncAt": null,
+            "liveMetrics": null,
+            "recentPosts": []
+        }
+    ],
+    "competitors": [],
+    "drafts": [],
+    "scheduledPosts": [],
+    "alerts": [],
+    "notifications": [],
+    "webhooks": [],
+    "reports": [
+        {
+            "id": 1,
+            "format": "csv",
+            "status": "queued",
+            "createdAt": "2026-07-14T09:44:47+00:00"
+        }
+    ],
+    "hashtags": [],
+    "rawPayloads": [
+        {
+            "type": "oauth_token_exchange",
+            "createdAt": "2026-07-14T10:01:05+00:00",
+            "payload": {
+                "platform": "linkedin",
+                "teamId": 3,
+                "tokenResponse": {
+                    "access_token": "demo_access_4057d5b16d0b59cf474a",
+                    "refresh_token": "demo_refresh_94128bb3642f10fc10ec",
+                    "expires_in": 3600,
+                    "token_type": "Bearer",
+                    "provider": "demo"
+                }
+            }
+        }
+    ],
+    "oauthStates": [],
+    "tokens": {
+        "fwSrZ2ggm\/ENXBp87ZxEOTAorG67Ce\/Yfke3GntAgtE=": 3,
+        "MUezI11BWlHWjQaPCOdFVBvyEleM2v4fW7D3iHbAHzM=": 4,
+        "cp+UnQmyEzVQJODPlpjbdX9\/C7mxR6BcaHY8dTNd0h4=": 5
+    },
+    "nextIds": {
+        "users": 7,
+        "teams": 4,
+        "socialAccounts": 4,
+        "competitors": 1,
+        "drafts": 1,
+        "scheduledPosts": 1,
+        "alerts": 1,
+        "notifications": 1,
+        "webhooks": 1,
+        "reports": 2
+    }
+}

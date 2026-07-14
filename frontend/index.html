@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Social Analytics Dashboard</title>
+    <style>
+      body {
+        margin: 1.25rem;
+        font-family: "Courier New", Courier, monospace;
+        line-height: 1.4;
+      }
+
+      .fallback {
+        margin-top: 0.5rem;
+        padding: 0.65rem;
+        border: 1px solid #ccc;
+        background: #f7f7f7;
+      }
+
+      code {
+        background: #efefef;
+        border: 1px solid #ddd;
+        padding: 0.05rem 0.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Social Analytics Dashboard</h1>
+    <p>This file is the Vite development entrypoint.</p>
+    <div id="root">
+      <div class="fallback">
+        If the app does not load here, run <code>npm install</code> and <code>npm run dev</code> in
+        <code>SocialMediaAnalyticsDashboard/frontend</code>, then open <code>http://localhost:5173</code>.
+      </div>
+    </div>
+    <script>
+      (function () {
+        var isViteDevServer = window.location.port === '5173';
+
+        if (!isViteDevServer) {
+          return;
+        }
+
+        var moduleScript = document.createElement('script');
+        moduleScript.type = 'module';
+        moduleScript.src = '/src/main.jsx';
+        document.body.appendChild(moduleScript);
+      })();
+
+      window.addEventListener('error', function (event) {
+        if (event && typeof event.message === 'string' && event.message.length > 0) {
+          console.warn('Frontend boot error:', event.message);
+        }
+      });
+    </script>
+  </body>
+</html>

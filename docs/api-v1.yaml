@@ -1,0 +1,394 @@
+openapi: 3.0.3
+info:
+  title: Social Media Analytics API
+  version: 1.1.0
+  description: |
+    Versioned REST API for dashboard and integration use-cases.
+    Responses follow a JSON:API-style envelope:
+    - success: { data: ..., meta: ... }
+    - error: { errors: [...], meta: ... }
+servers:
+  - url: http://localhost:8088
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required: [error, message]
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+        fullName:
+          type: string
+        role:
+          type: string
+          enum: [admin, manager, analyst]
+      required: [email, password, fullName, role]
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        mfaCode:
+          type: string
+      required: [email, password]
+    TeamCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+      required: [name]
+    SocialAccountCreateRequest:
+      type: object
+      properties:
+        teamId:
+          type: integer
+        platform:
+          type: string
+          enum: [facebook, instagram, twitter, linkedin, youtube]
+        accountName:
+          type: string
+        accountType:
+          type: string
+        externalAccountId:
+          type: string
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        expiresInSeconds:
+          type: integer
+      required: [teamId, platform, accountName]
+    AlertCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        metric:
+          type: string
+          enum: [reach, engagement, followers]
+        operator:
+          type: string
+          enum: [lt, gt, eq]
+        threshold:
+          type: number
+      required: [name, metric, operator, threshold]
+    ReportCreateRequest:
+      type: object
+      properties:
+        format:
+          type: string
+          enum: [pdf, csv, xlsx]
+      required: [format]
+    OAuthInitRequest:
+      type: object
+      properties:
+        platform:
+          type: string
+          enum: [facebook, instagram, twitter, linkedin, youtube]
+        teamId:
+          type: integer
+        accountName:
+          type: string
+        accountType:
+          type: string
+        redirectUri:
+          type: string
+          format: uri
+      required: [platform, teamId, accountName]
+paths:
+  /v1/health:
+    get:
+      summary: Service health check
+      responses:
+        '200':
+          description: Healthy service with component status
+          content:
+            application/json:
+              example:
+                status: healthy
+                checks:
+                  api: ok
+                  queue: ready
+                  scheduler: ready
+
+  /v1/auth/register:
+    post:
+      summary: Register user and return email verification token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/auth/verify-email:
+    post:
+      summary: Verify user email with verification token
+
+  /v1/auth/login:
+    post:
+      summary: Authenticate user and issue bearer token (supports MFA)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+
+  /v1/auth/token/refresh:
+    post:
+      summary: Issue a refreshed JWT token for authenticated user
+      security:
+        - bearerAuth: []
+
+  /v1/auth/me:
+    get:
+      summary: Get current authenticated user profile
+      security:
+        - bearerAuth: []
+
+  /v1/auth/mfa/enable:
+    post:
+      summary: Generate MFA secret and provisioning URI
+      security:
+        - bearerAuth: []
+
+  /v1/auth/mfa/verify:
+    post:
+      summary: Verify MFA code and enable MFA on account
+      security:
+        - bearerAuth: []
+
+  /v1/teams:
+    get:
+      summary: List teams owned by authenticated user
+      security:
+        - bearerAuth: []
+    post:
+      summary: Create a team (admin/manager)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamCreateRequest'
+
+  /v1/social-accounts:
+    get:
+      summary: List connected social accounts
+      security:
+        - bearerAuth: []
+    post:
+      summary: Connect social account
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SocialAccountCreateRequest'
+
+  /v1/social-accounts/sync:
+    post:
+      summary: Sync account metrics and recent content from platform API
+      description: Also archives raw sync payloads to MongoDB when configured.
+      security:
+        - bearerAuth: []
+
+  /v1/social-accounts/token-refresh:
+    post:
+      summary: Refresh OAuth access token for a connected social account
+      security:
+        - bearerAuth: []
+
+  /v1/competitors:
+    get:
+      summary: List tracked competitor accounts
+      security:
+        - bearerAuth: []
+    post:
+      summary: Add competitor account
+      security:
+        - bearerAuth: []
+
+  /v1/competitors/sync:
+    post:
+      summary: Sync competitor metrics from public data/API
+      security:
+        - bearerAuth: []
+
+  /v1/analytics/overview:
+    get:
+      summary: KPI overview across all platforms
+      security:
+        - bearerAuth: []
+
+  /v1/analytics/platforms:
+    get:
+      summary: Platform-specific analytics breakdown with date range filters
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: from
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: to
+          schema:
+            type: string
+            format: date
+
+  /v1/analytics/compare:
+    get:
+      summary: Current period vs previous period comparison
+      security:
+        - bearerAuth: []
+
+  /v1/analytics/sentiment:
+    get:
+      summary: Sentiment summary and trend series
+      security:
+        - bearerAuth: []
+
+  /v1/content/drafts:
+    get:
+      summary: List content drafts
+      security:
+        - bearerAuth: []
+    post:
+      summary: Create content draft
+      security:
+        - bearerAuth: []
+
+  /v1/content/scheduled:
+    get:
+      summary: List scheduled posts
+      security:
+        - bearerAuth: []
+    post:
+      summary: Schedule one draft
+      security:
+        - bearerAuth: []
+
+  /v1/content/bulk-schedule:
+    post:
+      summary: Bulk schedule drafts
+      security:
+        - bearerAuth: []
+
+  /v1/hashtags/trending:
+    get:
+      summary: List top trending hashtags with trend score
+      security:
+        - bearerAuth: []
+
+  /v1/alerts:
+    get:
+      summary: List alert rules
+      security:
+        - bearerAuth: []
+    post:
+      summary: Create alert rule
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertCreateRequest'
+
+  /v1/alerts/evaluate:
+    post:
+      summary: Evaluate configured alerts against latest metrics
+      security:
+        - bearerAuth: []
+
+  /v1/notifications:
+    get:
+      summary: List in-app notifications for current user
+      security:
+        - bearerAuth: []
+
+  /v1/reports:
+    get:
+      summary: List report jobs
+      security:
+        - bearerAuth: []
+    post:
+      summary: Queue report generation
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportCreateRequest'
+
+  /v1/reports/export:
+    post:
+      summary: Export report in selected format (PDF, CSV, XLSX)
+      security:
+        - bearerAuth: []
+
+  /v1/webhooks:
+    get:
+      summary: List webhook subscriptions
+      security:
+        - bearerAuth: []
+    post:
+      summary: Create webhook subscription
+      security:
+        - bearerAuth: []
+
+  /v1/oauth/connect/init:
+    post:
+      summary: Build OAuth authorization URL and state for selected platform
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuthInitRequest'
+
+  /v1/oauth/connect/callback:
+    post:
+      summary: Complete OAuth code exchange and create connected social account
+      security:
+        - bearerAuth: []
